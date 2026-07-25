@@ -27,7 +27,7 @@
 
 ## 화면 1 — 메인(여행지 검색)
 
-**초안** (`images/drafts/01-메인-v1.png`):
+**초안** (`images/drafts/01-main-v1.png`):
 ```
 Mobile app UI design mockup for a travel booking app, main/home screen. Top search bar
 for destinations, below it a horizontally scrolling row of destination recommendation
@@ -45,7 +45,7 @@ body text.
 **수정 방향**: 검색창은 텍스트 없이 아이콘만, 하단 내비는 라벨 없이 아이콘만, 카드
 라벨은 "정확히 한 단어"로 못박음.
 
-**최종** (`images/final/01-메인-여행지검색.png`):
+**최종** (`images/final/01-main-destination-search.png`):
 ```
 Mobile app UI mockup, travel app main/home screen. Top search bar with a magnifying
 glass icon only, empty, no placeholder text inside it. Below: one large bold title word
@@ -63,7 +63,7 @@ small text, paragraphs, or sentences anywhere in the image.
 
 ## 화면 2 — 상세(항공권 예약)
 
-**초안** (`images/drafts/02-상세-v1.png`):
+**초안** (`images/drafts/02-detail-v1.png`):
 ```
 Mobile app UI design mockup, travel booking app flight detail/booking screen. Top photo
 banner of an airplane in the sky with a back arrow icon. Below, flight route info with
@@ -81,7 +81,7 @@ portrait mobile 9:16 aspect ratio.
 **수정 방향**: 운임 규정 문단과 좌석 선택 UI(텍스트 의존적) 자체를 프롬프트에서 제거,
 공항 코드·가격·버튼 3개의 큰 텍스트 요소만 남김.
 
-**최종** (`images/final/02-상세-항공권예약.png`):
+**최종** (`images/final/02-detail-flight-booking.png`):
 ```
 Mobile app UI mockup, travel app flight booking detail screen. Top photo banner of an
 airplane in blue sky with a back arrow icon. Below: two large bold airport codes 'JFK'
@@ -97,7 +97,7 @@ color palette, high-fidelity Figma-style UI design, portrait 9:16 mobile screen.
 
 ## 화면 3 — 마이페이지(예약 내역)
 
-**초안** (`images/drafts/03-마이페이지-v1.png`):
+**초안** (`images/drafts/03-mypage-v1.png`):
 ```
 Mobile app UI design mockup, travel booking app my-page / booking history screen. Top
 profile section with avatar photo and user name text. Below, a vertical list of 3
@@ -114,7 +114,7 @@ color theme, high-fidelity Figma-style UI design, portrait mobile 9:16 aspect ra
 **수정 방향**: 부가 정보 문구·상태 버튼 텍스트를 없애고 색상 아이콘 배지(체크마크)로
 대체. 도시명은 정확히 한 단어(Paris/Tokyo/Rome)로 못박아 화면 1의 교훈 재적용.
 
-**최종** (`images/final/03-마이페이지-예약내역.png`):
+**최종** (`images/final/03-mypage-reservation-history.png`):
 ```
 Mobile app UI mockup, travel app my-page / booking history screen. Top: circular profile
 avatar photo with one large bold name 'John Doe'. Below: a vertical list of 3 booking
