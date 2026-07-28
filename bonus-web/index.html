@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="목표와 가용 시간에 맞는 집중 루틴을 추천하는 FocusFlow">
+    <title>FocusFlow</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app" aria-live="polite">
+      <section class="screen is-active" data-screen="goal" aria-labelledby="goal-title">
+        <p class="brand">FocusFlow</p>
+        <h1 id="goal-title" tabindex="-1">오늘은 무엇에<br>집중할까요?</h1>
+
+        <label class="goal-field">
+          <span class="field-icon" aria-hidden="true">⌖</span>
+          <input id="goal-input" value="영어 시험 공부하기" aria-label="오늘의 집중 목표">
+          <button class="clear-button" type="button" aria-label="목표 지우기">×</button>
+        </label>
+
+        <fieldset class="option-group">
+          <legend><span aria-hidden="true">◷</span> 집중 가능 시간</legend>
+          <div class="time-options">
+            <label><input type="radio" name="minutes" value="25"><span>25분</span></label>
+            <label><input type="radio" name="minutes" value="60" checked><span>60분</span></label>
+            <label><input type="radio" name="minutes" value="90"><span>90분</span></label>
+          </div>
+        </fieldset>
+
+        <div class="option-group">
+          <h2><span aria-hidden="true">◇</span> 빠른 선택</h2>
+          <div class="quick-options">
+            <button class="is-selected" type="button" data-quick="시험공부">시험공부</button>
+            <button type="button" data-quick="과제">과제</button>
+            <button type="button" data-quick="독서">독서</button>
+            <button type="button" data-quick="업무">업무</button>
+          </div>
+        </div>
+
+        <button class="primary-button screen-cta" type="button" data-go="routine">
+          맞춤 루틴 만들기
+        </button>
+      </section>
+
+      <section class="screen" data-screen="routine" aria-labelledby="routine-title" hidden>
+        <header class="screen-header">
+          <button class="back-button" type="button" data-go="goal" aria-label="목표 설정으로 돌아가기">‹</button>
+          <h1 id="routine-title" tabindex="-1">맞춤 집중 루틴</h1>
+        </header>
+
+        <div class="goal-summary">
+          <span class="summary-icon" aria-hidden="true">◎</span>
+          <strong data-goal-text>영어 시험 공부하기</strong>
+        </div>
+
+        <div class="routine-options" role="radiogroup" aria-label="집중 루틴">
+          <button class="routine-card is-selected" type="button" data-routine data-seconds="1476" role="radio" aria-checked="true">
+            <span class="routine-icon" aria-hidden="true">⚖</span>
+            <span class="routine-copy">
+              <strong>균형 집중</strong>
+              <small>25분 집중 · 5분 휴식 · 2세트</small>
+              <b>총 60분</b>
+            </span>
+            <span class="recommend">추천</span>
+            <span class="radio-mark" aria-hidden="true">✓</span>
+          </button>
+
+          <button class="routine-card" type="button" data-routine data-seconds="1476" role="radio" aria-checked="false">
+            <span class="routine-icon" aria-hidden="true">ϟ</span>
+            <span class="routine-copy">
+              <strong>빠른 몰입</strong>
+              <small>25분 집중 · 1세트</small>
+            </span>
+            <span class="radio-mark" aria-hidden="true"></span>
+          </button>
+
+          <button class="routine-card" type="button" data-routine data-seconds="2976" role="radio" aria-checked="false">
+            <span class="routine-icon mint" aria-hidden="true">◒</span>
+            <span class="routine-copy">
+              <strong>깊은 집중</strong>
+              <small>50분 집중 · 10분 휴식</small>
+            </span>
+            <span class="radio-mark" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <button class="primary-button screen-cta" type="button" data-go="timer">
+          이 루틴으로 시작
+        </button>
+      </section>
+
+      <section class="screen timer-screen" data-screen="timer" aria-labelledby="timer-title" hidden>
+        <p class="brand">FocusFlow</p>
+        <h1 id="timer-title" class="status" tabindex="-1"><span aria-hidden="true"></span>집중 중</h1>
+        <p class="timer-goal" data-goal-text>영어 시험 공부하기</p>
+
+        <div class="timer-ring" role="timer" aria-label="남은 집중 시간">
+          <div>
+            <strong id="timer-value">24:36</strong>
+            <span>집중 시간</span>
+            <b>세트 1 / 2</b>
+          </div>
+        </div>
+
+        <p class="break-copy">다음 휴식까지 <strong id="break-minutes">24분</strong></p>
+        <button class="primary-button pause-button" type="button" id="pause-button">
+          <span aria-hidden="true">Ⅱ</span> 일시정지
+        </button>
+        <button class="end-button" type="button" data-go="goal">집중 종료하기</button>
+      </section>
+    </main>
+  </body>
+</html>
