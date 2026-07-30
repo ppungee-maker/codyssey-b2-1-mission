@@ -238,10 +238,27 @@ Generous spacing
 | 최종 이미지 수 | 3장 |
 | 해상도 | 각 `941 × 1672px` |
 | 모바일 비율 | 약 9:16 |
-| 한글 텍스트 깨짐 | 없음 |
+| 한글 텍스트 깨짐 | 없음 (자소 분리·뭉개짐 0건) |
 | 요소 잘림·겹침 | 없음 |
-| 불필요한 메뉴·설정 아이콘 | 없음 |
+| 불필요한 메뉴·설정 아이콘 | 없음 — 초안의 설정·햄버거 아이콘이 최종에서 사라짐 |
 | 화면 간 색상·카드·버튼 일관성 | 유지 |
+| 남은 미세 결함 | 1건 — `03_focus_timer.png` 상단 `집중  중` 의 두 글자 사이 간격이 넓다 |
+
+**초안에서 무엇을 고쳤는지** (초안 [`00_draft_board.png`](./00_draft_board.png) ↔ 최종 3장):
+
+| 초안에서 발견한 것 | 프롬프트를 어떻게 바꿨나 | 최종 결과 |
+|---|---|---|
+| 화면1은 `50분` 선택인데 화면2 추천은 `총 60분` | 화면별 프롬프트에 선택값 `60분` 을 문자 그대로 지정 | 두 화면의 시간이 일치 |
+| 화면1 설정 아이콘·화면3 햄버거 메뉴가 임의로 추가됨 | `Do not add menu icons, settings icons, bottom navigation…` 를 명시 | 최종 3장에 아이콘 없음 |
+| 세 화면이 한 장에 붙어 개별 제출 불가 | `Generate each screen as an independent image` + 9:16 지정 | 독립 PNG 3장(`941 × 1672px`) |
+| 종료 행동이 주요 버튼만큼 강조될 여지 | `일시정지` 는 primary, `집중 종료하기` 는 low-emphasis 로 지정 | 채움 버튼 ↔ 텍스트 행동으로 구분 |
+| 화면마다 색·여백이 흔들릴 여지 | 이전 결과를 디자인 레퍼런스로 걸고 색·카드·여백을 매번 반복 지정 | 세 화면 스타일 일치 |
+
+**남은 미세 결함 1건에 대한 판단** — `집중  중` 의 글자 간격은 이미지 생성 모델이 한글
+두 어절 사이를 넓게 렌더한 것으로, 글자 자체가 깨지거나 다른 글자로 바뀐 것은 아닙니다.
+읽는 데 지장이 없고, 이 한 곳을 고치려고 화면을 다시 생성하면 이미 맞춰 둔 세 화면의
+색·여백·타이포그래피가 다시 흔들릴 위험이 더 큽니다. 그래서 **고치지 않고 남긴 뒤 여기에
+적어 둡니다** — 발견하지 못한 것과 발견하고 남긴 것은 다릅니다.
 
 화면별 세부 검사 결과는 [작업 로그 §8](./FocusFlow_AI_UIUX_Work_Log.md)에 있습니다.
 
@@ -260,7 +277,19 @@ Generous spacing
 | 3 | 루틴 선택의 `이 루틴으로 시작` | `03_Focus_Timer` |
 | 4 | 타이머의 `집중 종료하기` | `01_Goal_Setup` |
 
-> 제출 전 Figma `Share`에서 `Anyone with the link`와 `Can view`가 선택됐는지 직접 확인해야 합니다.
+**공개 열람 권한 확인 (완료)** — 링크만 있으면 남이 볼 수 있는지는 말로 확인할 수 없어서,
+**로그인하지 않은 브라우저**(쿠키 없는 새 프로필)로 위 링크를 직접 열어 봤습니다.
+
+| 확인 방법 | 결과 |
+|---|---|
+| 비로그인 브라우저로 링크 접속 | HTTP 200 — 파일 페이지가 열림 |
+| 도착한 주소 | `.../design/k848SHx87aOxQwdo1xO40W/FocusFlow---AI-UI-UX-Prototype` |
+| 문서 제목 인식 | `FocusFlow - AI UI UX Prototype – Figma` |
+| 로그인·접근 요청 화면 | 나타나지 않음 |
+
+로그인 요구나 `Request access` 화면 없이 파일 제목까지 표시되므로 `Anyone with the link`
+공유가 살아 있습니다. (`Share` 메뉴 설정값 자체는 소유자 계정에서만 보이므로, 남의 시점에서
+실제로 열리는지를 근거로 삼았습니다.)
 
 ---
 
@@ -281,6 +310,94 @@ Generous spacing
 5. 타이머 시작·일시정지·재개
 6. 집중 종료 후 첫 화면 복귀
 
+### 코드 — 화면 세 개를 한 페이지에서 바꾸는 방법
+
+세 화면을 각각 다른 HTML 파일로 만들지 않았습니다. 한 페이지 안에 `<section>` 세 개를 두고
+**하나만 보이게** 합니다. 화면을 옮겨도 입력한 목표가 살아 있어야 하기 때문입니다.
+
+`bonus-web/index.html` — 화면마다 `data-screen` 이름표를 답니다.
+
+```html
+<main class="app" aria-live="polite">
+  <section class="screen is-active" data-screen="goal" aria-labelledby="goal-title">
+    <h1 id="goal-title" tabindex="-1">오늘은 무엇에<br>집중할까요?</h1>
+    <input id="goal-input" value="영어 시험 공부하기" aria-label="오늘의 집중 목표">
+    <button type="button" data-go="routine">루틴 추천받기</button>
+  </section>
+  <!-- data-screen="routine" · data-screen="timer" 도 같은 구조 -->
+</main>
+```
+
+`bonus-web/styles.css` — 색·간격을 변수로 한 번만 정해 세 화면이 같은 규칙을 씁니다.
+숨긴 화면은 `[hidden]` 으로 완전히 빠집니다(자리를 차지하지 않습니다).
+
+```css
+:root {
+  --primary: #5b5fef;   /* 주요 버튼·강조 */
+  --mint: #42bfa0;      /* 진행·완료 표시 */
+  --navy: #071432;      /* 본문 글자 */
+  --muted: #69748f;     /* 보조 설명 */
+  --border: #d5dbea;
+  --background: #f7f8fc;
+}
+.screen[hidden] { display: none; }
+```
+
+`bonus-web/app.js` — 화면 전환·목표 전달·타이머가 각각 함수 하나입니다.
+
+```js
+function showScreen(name) {                       // ① 한 화면만 보이게
+  screens.forEach((screen) => {
+    const active = screen.dataset.screen === name;
+    screen.hidden = !active;
+    screen.classList.toggle("is-active", active);
+  });
+  document.querySelector(`[data-screen="${name}"] h1`)?.focus({ preventScroll: true });
+}
+
+function updateGoal() {                           // ② 입력한 목표를 다음 화면으로
+  const goal = goalInput.value.trim() || "오늘의 집중 목표";
+  document.querySelectorAll("[data-goal-text]").forEach((el) => { el.textContent = goal; });
+}
+
+function startTimer() {                           // ③ 선택한 루틴 길이로 카운트다운
+  clearInterval(timerId);
+  remaining = Number(document.querySelector("[data-routine].is-selected").dataset.seconds);
+  paused = false;
+  renderTimer();
+  timerId = setInterval(() => {
+    if (!paused && remaining > 0) { remaining -= 1; renderTimer(); }
+  }, 1000);
+}
+```
+
+버튼마다 클릭 이벤트를 붙이지 않고 **문서 한 곳에서 받아** 어떤 버튼인지 구분합니다.
+버튼이 늘어도 코드가 늘지 않습니다.
+
+```js
+document.addEventListener("click", (event) => {
+  const navigation = event.target.closest("[data-go]");
+  if (navigation) {
+    const destination = navigation.dataset.go;
+    if (destination === "routine") updateGoal();     // 목표 전달
+    if (destination === "timer") startTimer();       // 타이머 시작
+    if (destination === "goal") clearInterval(timerId);  // 되돌아가면 정지
+    showScreen(destination);
+  }
+});
+```
+
+일시정지는 타이머를 없애지 않고 **깃발 하나만 뒤집습니다.** 그래서 남은 시간이 그대로 섭니다.
+
+```js
+pauseButton.addEventListener("click", () => {
+  paused = !paused;
+  pauseButton.innerHTML = paused
+    ? '<span aria-hidden="true">▶</span> 계속하기'
+    : '<span aria-hidden="true">Ⅱ</span> 일시정지';
+});
+```
+
 ### 검수 결과
 
 | 검사 | 결과 |
@@ -290,6 +407,31 @@ Generous spacing
 | 화면 이동과 데이터 전달 | 정상 |
 | 타이머 일시정지 | 시간이 증가·감소하지 않고 유지됨 |
 | 브라우저 콘솔 오류·경고 | 0건 |
+
+콘솔 0건을 눈으로만 확인하지 않으려고 **자체 점검 한 줄**을 코드 마지막에 뒀습니다.
+시간 표기나 화면 개수가 틀어지면 콘솔에 경고가 찍힙니다.
+
+```js
+console.assert(formatTime(1476) === "24:36" && screens.length === 3, "FocusFlow self-check failed");
+```
+
+실행 로그 — 모바일 폭 `390 × 844px` 로 띄워 세 화면을 실제로 눌러 본 기록입니다.
+
+```
+$ python3 -m http.server 8765 --directory bonus-web
+127.0.0.1 - - "GET / HTTP/1.1" 200 -
+127.0.0.1 - - "GET /styles.css HTTP/1.1" 200 -
+127.0.0.1 - - "GET /app.js HTTP/1.1" 200 -
+
+화면1 제목: 오늘은 무엇에 집중할까요?
+화면2 목표표시: 영어 시험 공부하기          ← 입력한 목표가 다음 화면으로 전달됨
+타이머: 시작 24:36 → 3초 후 24:33 → 일시정지 24:33 → 5초 대기 24:33 → 재개 3초 후 24:30
+복귀 화면: 오늘은 무엇에 집중할까요?
+콘솔 메시지: 없음 (오류 0 · 경고 0)
+```
+
+일시정지 줄이 요점입니다 — **5초를 기다려도 `24:33` 그대로**이고, 계속하기를 누른 뒤에야
+다시 줄어듭니다. 타이머를 없앴다 다시 만드는 방식이었다면 남은 시간이 처음으로 돌아갔을 겁니다.
 
 ---
 
@@ -365,4 +507,15 @@ FocusFlow_Submission/
 - [x] Figma Hotspot 화면 전환을 구성했다.
 - [x] 외부 디자인 캡처를 사용하지 않았다.
 - [x] 보너스 HTML/CSS 변환을 완료했다.
-- [ ] 제출 전 Figma 공개 열람 권한을 최종 확인한다.
+- [x] Figma 공개 열람 권한을 비로그인 브라우저로 확인했다(§8).
+
+---
+
+## 14. 팀 역할
+
+| 역할 | 담당 | 한 일 |
+|---|---|---|
+| 기획 총괄 | **황지영** (팀장) | 앱 주제·화면 3종 역할 확정, 사용자 목표와 3단계 흐름 결정, 산출물 최종 판단 |
+| 기본 개발 | **홍동완** | Figma 프레임 배치·핫스팟 연결, 보너스 웹앱 화면 구현 |
+| AI 활용·문서화 | **오주현** | 이미지 생성 프롬프트 3단계 개선, 코드·실행 로그 검증, README 정리 |
+| 검수 (공동) | 황지영 · 홍동완 · 오주현 | 요구사항 충족, 문서와 실물의 일치, 캡처 내 비밀 정보 노출 여부를 각자 확인 |
